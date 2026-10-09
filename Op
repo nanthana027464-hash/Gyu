@@ -1,0 +1,105 @@
+-- โหลด Rayfield UI Library
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- สร้างหน้าต่างหลัก
+local Window = Rayfield:CreateWindow({
+    Name = "OP Break And Steal an Egg",
+    LoadingTitle = "Loading Script...",
+    LoadingSubtitle = "by Rayfield UI",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "EggStealerConfig",
+        FileName = "SaveSettings"
+    },
+    KeySystem = false -- ไม่ใช้ระบบ Key
+})
+
+-- สร้าง Tab Main
+local MainTab = Window:CreateTab("Main", 4483362458) -- 4483362458 คือ ID ไอคอน
+
+---------------------------------------------------------------------------
+-- SYSTEM 1: AUTO BREAK
+---------------------------------------------------------------------------
+MainTab:CreateSection("⚒️ Auto Break System")
+
+-- ตัวแปรเก็บค่า
+_G.AutoBreak = false
+_G.BreakFilter = {}
+
+-- Toggle สำหรับเปิด/ปิด Auto Break
+local BreakToggle = MainTab:CreateToggle({
+    Name = "Auto Break Status",
+    CurrentValue = false,
+    Flag = "AutoBreakToggle",
+    Callback = function(Value)
+        _G.AutoBreak = Value
+        if _G.AutoBreak then
+            task.spawn(function()
+                while _G.AutoBreak do
+                    task.wait(0.5) -- ความไว (ปรับได้)
+                    
+                    -- [ใส่สคริปต์ตีไข่ (FireServer) ของเกมตรงนี้]
+                    -- ตัวอย่าง:
+                    -- if table.find(_G.BreakFilter, "Secret") then ... end
+                    
+                end
+            end)
+        end
+    end,
+})
+
+-- Dropdown สำหรับเลือก Rarity (เลือกได้หลายอัน)
+local BreakDropdown = MainTab:CreateDropdown({
+    Name = "Break Rarity Filter",
+    Options = {"Secret", "Celestial", "Inferno"},
+    CurrentOption = {},
+    MultipleOptions = true, -- เปิดให้เลือกหลายตัวเลือก
+    Flag = "BreakFilterDropdown",
+    Callback = function(Options)
+        _G.BreakFilter = Options
+    end,
+})
+
+---------------------------------------------------------------------------
+-- SYSTEM 2: AUTO PICK UP & BANK
+---------------------------------------------------------------------------
+MainTab:CreateSection("💰 Auto Pick Up & Bank")
+
+-- ตัวแปรเก็บค่า
+_G.AutoBank = false
+_G.BankFilter = {}
+
+-- Toggle สำหรับเปิด/ปิด Auto Bank
+local BankToggle = MainTab:CreateToggle({
+    Name = "Auto Pick Up & Bank",
+    CurrentValue = false,
+    Flag = "AutoBankToggle",
+    Callback = function(Value)
+        _G.AutoBank = Value
+        if _G.AutoBank then
+            task.spawn(function()
+                while _G.AutoBank do
+                    task.wait(1) -- ความไว (ปรับได้)
+                    
+                    -- [ใส่สคริปต์เก็บของหรือเข้า Bank (FireServer) ตรงนี้]
+                    
+                end
+            end)
+        end
+    end,
+})
+
+-- Dropdown สำหรับเลือก Rarity Bank (เลือกได้หลายอัน)
+local BankDropdown = MainTab:CreateDropdown({
+    Name = "Bank Rarity Filter",
+    Options = {"Celestial", "Inferno"},
+    CurrentOption = {},
+    MultipleOptions = true,
+    Flag = "BankFilterDropdown",
+    Callback = function(Options)
+        _G.BankFilter = Options
+    end,
+})
+
+-- โหลด UI เสร็จสิ้น
+Rayfield:LoadConfiguration()
